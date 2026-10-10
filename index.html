@@ -1,14 +1,93 @@
 <!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Három interaktív algoritmizálási fejtörő: Josephus, 100 ajtó és hamis érme. Python-kód, léptethető szimuláció és gyakorlás."><title>Algoritmus műhely</title><style>
 :root{--bg:#101917;--panel:#192521;--line:#33423b;--muted:#a9bbb1;--ink:#f5f3e9;--green:#c6f28c;--orange:#ffc293}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,sans-serif}button,input{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:10px 18px;background:var(--panel);color:var(--ink)}button:hover{border-color:var(--green)}button:disabled{opacity:.4;cursor:default}.primary{background:var(--green);color:#152317;border:0;font-weight:700}header{border-bottom:1px solid var(--line);padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:700}.brand span{color:var(--green)}main{max-width:1180px;margin:auto;padding:44px 28px}nav{display:flex;gap:8px;flex-wrap:wrap;margin:30px 0}nav button.active{background:var(--green);color:#152317}h1{font:600 clamp(36px,5vw,64px)/1.08 Georgia,serif;margin:14px 0 22px;letter-spacing:-1px}h2{font:500 32px/1.2 Georgia,serif;margin:0 0 20px}h3{margin:0 0 12px}.eyebrow{color:var(--green);text-transform:uppercase;font-size:12px;letter-spacing:2px}.lead{max-width:720px;color:var(--muted);font-size:20px}.panel{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:28px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.section{display:none}.section.active{display:block}.question{font:500 28px/1.4 Georgia,serif}.muted{color:var(--muted)}.tag{font-size:13px;padding:5px 10px;border:1px solid var(--line);border-radius:30px;margin-right:6px;display:inline-block}.steps{padding-left:22px}.steps li{padding:8px}.callout{border-left:3px solid var(--green);padding:12px 20px;margin-top:22px;background:#223225}.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:18px}label{display:flex;flex-direction:column;color:var(--muted);font-size:14px}input{width:90px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:9px;color:var(--ink)}svg{display:block;width:100%;max-height:390px}svg text{font-family:system-ui;font-weight:700}#status{min-height:60px;text-align:center;font-size:20px;color:var(--green)}.buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}table{width:100%;border-collapse:collapse;font-size:15px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:10px}th{color:var(--muted);font-weight:500}tr.latest{background:#304330}#tracewrap{max-height:330px;overflow:auto}pre{white-space:pre;overflow:auto;margin:0;font:15px/1.8 ui-monospace,monospace}code{color:var(--green)}.code-line{display:block;padding:0 12px;border-left:3px solid transparent}.code-line.hot{background:#314330;border-color:var(--green)}.footer{display:flex;justify-content:space-between;align-items:center;margin-top:32px;border-top:1px solid var(--line);padding-top:22px;color:var(--muted);gap:12px}.answer{display:none}.answer.shown{display:block}body.present main{max-width:1450px}body.present .lead,body.present .tag{display:none}body.present h1{font-size:42px}body.present main{padding-top:20px}body.present .panel{font-size:20px}a{color:var(--green)}@media(max-width:780px){.grid{grid-template-columns:1fr}header{flex-wrap:wrap}main{padding:28px 18px}.panel{padding:20px}.footer{flex-wrap:wrap}h1{font-size:42px}}@media print{header,nav,.footer,button{display:none}.section{display:block!important;break-inside:avoid;margin:25px 0}body{background:white;color:black}.panel{background:white}code,.muted,.lead{color:black}}
-[hidden]{display:none!important}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #ffc293;outline-offset:3px}select{font:inherit;color:var(--ink);background:var(--bg);padding:10px;border:1px solid var(--line);border-radius:8px}.chooser{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px}.chooser button{text-align:left;padding:16px 20px}.chooser strong{display:block;font-size:19px}.chooser small{color:var(--muted)}.chooser .selected{border-color:var(--green);background:#243626}.chooser .selected strong{color:var(--green)}.simstats{display:flex;justify-content:space-between;color:var(--green);font-size:18px;font-weight:700}.tracewrap,#j-tracewrap{max-height:390px;overflow:auto}td{overflow-wrap:anywhere}.wideleft{grid-template-columns:1.25fr 1fr}.doorgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:20px 0}.door{padding:0;min-height:40px;border-radius:5px;background:#26342e;color:#bcc9c2;font-size:14px;position:relative}.door.opened{background:#c6f28c;color:#152317}.door.toggled{border:3px solid #ffc293}.door.inspected{outline:2px solid white;outline-offset:1px}.legend{font-size:12px;display:flex;align-items:center;flex-wrap:wrap;gap:7px;color:var(--muted)}.dot{display:inline-block;width:11px;height:11px;border-radius:2px}.dot.open{background:var(--green)}.dot.closed{background:#52635a}.dot.touched{border:2px solid var(--orange)}.coins{display:grid;grid-template-columns:repeat(9,1fr);gap:7px;margin:25px 0}.coin{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:50%;border:2px solid #607364;background:#26342e;color:#87988f;font-weight:700}.coin.possible{background:#c6f28c;border-color:#e1ffc0;color:#172b1b}.coin.winner{background:#ffc293;border-color:#ffe1c7}.codeactions{display:flex;gap:15px;align-items:center;margin-top:20px}.curriculum{margin-top:28px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px;font-size:14px}.curriculum summary{cursor:pointer;color:var(--ink)}.curriculum p{max-width:950px}#j-status{min-height:60px;text-align:center;font-size:20px;color:var(--green)}body.present .chooser{margin-bottom:16px}body.present .chooser button{padding:8px 15px}body.present .chooser small{display:none}body.present .curriculum{display:none}pre{font-size:14px;line-height:1.7}h1{margin-bottom:16px}nav{margin:24px 0}@media(max-width:780px){.wideleft{grid-template-columns:1fr}.chooser{gap:7px}.chooser button{padding:10px}.chooser strong{font-size:15px}.chooser small{font-size:11px}.doorgrid{gap:4px}.door{font-size:12px;min-height:34px}.coins{gap:4px}.panel{min-width:0}pre{font-size:12px}}@media print{.chooser,.curriculum{display:none}article[hidden]{display:none!important}}</style></head><body><header><div class="brand"><span>◉</span> Algoritmus műhely</div><div><button id="present" aria-pressed="false">Prezentációs nézet</button> <button id="fullscreen">Teljes képernyő</button></div></header><main><div class="chooser" aria-label="Feladatválasztó"><button id="choose-j"><strong>01 · Josephus</strong><small>Ki marad a körben?</small></button><button id="choose-d"><strong>02 · 100 ajtó</strong><small>Melyik marad nyitva?</small></button><button id="choose-c"><strong>03 · Hamis érme</strong><small>Két mérésből megtalálod?</small></button></div><div class="eyebrow">Digitális kultúra · Python · Interaktív fejtörők</div><h1 id="lesson-title"></h1><p class="lead" id="lesson-intro"></p><span class="tag" id="lesson-tag"></span><span class="tag">8 perces bemutatóhoz is</span><nav id="nav" aria-label="A feladat részei"></nav><article id="lesson-j"><section class="section active"><div class="grid"><div class="panel"><div class="eyebrow">01 / A kihívás</div><h2>Tíz hely. Egy bennmaradó.</h2><p class="question">Tíz gyerek körben áll. Minden második kilép. Hová állnál, ha utoljára szeretnél bent maradni?</p><p>Az 1-esnél kezdjük a számolást: ő az első, a 2-es a második, tehát a 2-es lép ki először. Mindig a kieső utáni gyereknél folytatjuk, újra egytől számolva.</p><div class="callout">A kieső helyeket kihagyjuk. A kör végén visszajutunk az elejére.</div></div><div class="panel"><h3>Először gondolkodjunk!</h3><ol class="steps"><li>Melyik számok esnek ki az első körben?</li><li>Az első kör után újrakezdjük az 1-esnél?</li><li>Hogyan lehet a körbejárást listával leírni?</li></ol><label>A tipped (1–10)<input id="j-guess" type="number" min="1" max="10" placeholder="?" aria-label="Tipp a bennmaradó helyére"></label><p class="muted">A megoldást a szimuláció végén ellenőrizheted.</p></div></div></section><section class="section"><div class="grid"><div class="panel"><h2>A szabályból algoritmus</h2><ol class="steps"><li>Készítsük el a résztvevők listáját.</li><li>Induljunk a lista elejéről (0. index).</li><li>Lépjünk <code>k − 1</code> helyet, körbeérve.</li><li>Töröljük a kiválasztott elemet.</li><li>Folytassuk a következő résztvevőnél.</li><li>Ismételjük, amíg egyetlen elem marad.</li></ol></div><div class="panel"><h3>Miért kell a modulo?</h3><p>A <code>%</code> az osztás maradékát adja. Segítségével visszatérünk a lista elejére.</p><p class="question"><code>(index + k − 1) % hossz</code></p><p>Példa: 5 elem maradt, az index 4, és minden második kiesik.</p><div class="callout"><code>(4 + 2 − 1) % 5 = 0</code><br>A lista utolsó elemétől az elsőhöz jutunk.</div><p class="muted">Az index 0-tól indul; a résztvevők számozása 1-től. A két szám nem ugyanaz!</p></div></div></section><section class="section"><div class="controls"><label>Résztvevők (2–30)<input id="j-n" type="number" min="2" max="30" value="10"></label><label>Minden k-adik (2–10)<input id="j-k" type="number" min="2" max="10" value="2"></label><button id="j-reset">Újrakezdés</button></div><div class="grid"><div class="panel"><svg id="j-circle" viewBox="0 0 460 400" role="img" aria-label="A körben álló résztvevők"></svg><div id="j-status" aria-live="polite"></div><div class="buttons"><button id="j-back">Vissza</button><button class="primary" id="j-step">Következő kieső →</button><button id="j-play">Automatikus lejátszás</button></div></div><div class="panel"><h3>Nyomkövetés</h3><p class="muted">A táblázat egy sora egy ciklusforduló. Az index a törlés előtti listára vonatkozik.</p><div id="j-tracewrap"><table><thead><tr><th>Lépés</th><th>Index</th><th>Kieső</th><th>Maradók</th></tr></thead><tbody id="j-trace"></tbody></table></div><div id="j-result" class="callout" hidden></div></div></div></section><section class="section"><div class="grid"><div class="panel"><h2>A megoldás Pythonban</h2><pre id="j-code"></pre><button id="j-copy" style="margin-top:20px">Kód másolása</button><a id="j-download" download="josephus.py" style="margin-left:15px">Letöltés .py</a></div><div class="panel"><h3>Mit jelentenek a sorok?</h3><p><code>list(range(1, n + 1))</code>: létrehozza az 1-től n-ig számozott résztvevőket.</p><p><code>while len(kor) &gt; 1</code>: addig ismétel, amíg egynél többen vannak.</p><p><code>pop(index)</code>: eltávolítja és visszaadja az adott indexű elemet.</p><p>Törléskor a következő elem a kieső helyére csúszik, ezért az indexet nem növeljük külön. A következő modulo a kör végén is helyesen kezeli az indexet.</p><div class="callout">Ez az oldal a Python-algoritmussal azonos logikát szemléltet JavaScriptben. A letölthető Python-kód önállóan futtatható.</div></div></div></section><section class="section"><div class="grid"><div class="panel"><h2>Próbáljuk másképp!</h2><ol class="steps"><li>5 résztvevő, minden második kiesik. Ki marad?</li><li>7 résztvevő, minden harmadik kiesik. Mi változik?</li><li>Miért hibás az <code>index + k</code>, ha az aktuális résztvevőt is számoljuk?</li></ol><button id="j-reveal">Megoldások megmutatása</button><div class="answer callout" id="j-answers">1. A 3-as marad (kiesők: 2, 4, 1, 5).<br>2. A 4-es marad (kiesők: 3, 6, 2, 7, 5, 1).<br>3. Egy hellyel többet lépnénk a szükségesnél.</div></div><div class="panel"><h3>Óra végi ellenőrzés</h3><p>A tanuló képes legyen:</p><ul><li>szóban megfogalmazni a kiesés szabályát;</li><li>végigkövetni egy rövid lista változásait;</li><li>elmagyarázni a ciklus és a modulo szerepét;</li><li>új bemenettel tesztelni a programot.</li></ul><p class="muted">Előismeret: Python-lista, indexelés, változó, while ciklus. A feladat ezek gyakorlására készült; a nehézség a csoport tudásához igazítható.</p></div></div></section></article><article id="lesson-d" hidden><section class="section"><div class="grid"><div class="panel"><div class="eyebrow">01 / A kihívás</div><h2>Száz ajtó. Száz kör.</h2><p class="question">Melyik ajtók maradnak nyitva a végén?</p><p>Kezdetben minden ajtó zárva van. Az első körben mindegyik állapotát megváltoztatjuk. A másodikban minden másodikét, a harmadikban minden harmadikét, és így tovább, a századik körig.</p><div class="callout">Átváltás: a zárt ajtót kinyitjuk, a nyitottat becsukjuk. A k-adik körben a k többszöröseihez nyúlunk.</div></div><div class="panel"><h3>Először csak 10 ajtóval gondolkodj!</h3><ol class="steps"><li>Mi történik az első körben?</li><li>Miért csukódik be a 6-os a második körben?</li><li>A 6-oshoz melyik további körökben nyúlunk?</li></ol><label>A tipped: hány ajtó marad nyitva 100-ból?<input id="d-guess" type="number" min="0" max="100" placeholder="?"></label><p class="muted">A szimulációban 20 ajtóval indulunk, majd 100-ra válthatsz. Mindig ugyanannyi kört végzünk, ahány ajtó van.</p></div></div></section>
+[hidden]{display:none!important}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #ffc293;outline-offset:3px}select{font:inherit;color:var(--ink);background:var(--bg);padding:10px;border:1px solid var(--line);border-radius:8px}.chooser{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px}.chooser button{text-align:left;padding:16px 20px}.chooser strong{display:block;font-size:19px}.chooser small{color:var(--muted)}.chooser .selected{border-color:var(--green);background:#243626}.chooser .selected strong{color:var(--green)}.simstats{display:flex;justify-content:space-between;color:var(--green);font-size:18px;font-weight:700}.tracewrap,#j-tracewrap{max-height:390px;overflow:auto}td{overflow-wrap:anywhere}.wideleft{grid-template-columns:1.25fr 1fr}.doorgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:20px 0}.door{padding:0;min-height:40px;border-radius:5px;background:#26342e;color:#bcc9c2;font-size:14px;position:relative}.door.opened{background:#c6f28c;color:#152317}.door.toggled{border:3px solid #ffc293}.door.inspected{outline:2px solid white;outline-offset:1px}.legend{font-size:12px;display:flex;align-items:center;flex-wrap:wrap;gap:7px;color:var(--muted)}.dot{display:inline-block;width:11px;height:11px;border-radius:2px}.dot.open{background:var(--green)}.dot.closed{background:#52635a}.dot.touched{border:2px solid var(--orange)}.coins{display:grid;grid-template-columns:repeat(9,1fr);gap:7px;margin:25px 0}.coin{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:50%;border:2px solid #607364;background:#26342e;color:#87988f;font-weight:700}.coin.possible{background:#c6f28c;border-color:#e1ffc0;color:#172b1b}.coin.winner{background:#ffc293;border-color:#ffe1c7}.codeactions{display:flex;gap:15px;align-items:center;margin-top:20px}.curriculum{margin-top:28px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px;font-size:14px}.curriculum summary{cursor:pointer;color:var(--ink)}.curriculum p{max-width:950px}#j-status{min-height:60px;text-align:center;font-size:20px;color:var(--green)}body.present .chooser{margin-bottom:16px}body.present .chooser button{padding:8px 15px}body.present .chooser small{display:none}body.present .curriculum{display:none}pre{font-size:14px;line-height:1.7}h1{margin-bottom:16px}nav{margin:24px 0}@media(max-width:780px){.wideleft{grid-template-columns:1fr}.chooser{gap:7px}.chooser button{padding:10px}.chooser strong{font-size:15px}.chooser small{font-size:11px}.doorgrid{gap:4px}.door{font-size:12px;min-height:34px}.coins{gap:4px}.panel{min-width:0}pre{font-size:12px}}@media print{.chooser,.curriculum{display:none}article[hidden]{display:none!important}}</style><style id="py-runner-style">
+/* A három tananyag közös, böngészőben futó Python-szerkesztője. */
+.py-lab{margin-top:24px;border-color:#597251;position:relative}
+.py-lab h3{font:500 clamp(23px,3vw,30px)/1.3 Georgia,serif;margin:0 0 8px}
+.py-lab-intro{color:var(--muted);max-width:900px;margin:0 0 18px}
+.py-lab-hint{border-left:3px solid var(--orange);padding:10px 14px;background:#282f26;margin:0 0 18px}
+.py-editor-label{display:block;font-size:14px;font-weight:650;color:var(--ink);margin-bottom:8px}
+.py-editor{display:block;width:100%;min-height:345px;resize:vertical;padding:18px;
+ border:1px solid #536858;border-radius:10px;background:#0b1513;color:#f5f3e9;
+ font:14px/1.65 ui-monospace,SFMono-Regular,Consolas,'Liberation Mono',monospace;
+ white-space:pre;overflow:auto;tab-size:4;outline-offset:2px}
+.py-editor:focus-visible{outline:3px solid var(--green);border-color:var(--green)}
+.py-lab-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
+.py-run-status{margin:10px 0;color:var(--muted);font-size:14px;min-height:1.5em}
+.py-run-status.ok{color:var(--green)}.py-run-status.fail{color:#ffc293}
+.py-output-header{font-size:14px;font-weight:650;color:var(--ink);margin:16px 0 8px}
+.py-output{min-height:105px;max-height:330px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;
+ background:#0b1513;color:#eaf6e3;border-radius:10px;border:1px solid #415249;padding:14px;
+ font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}
+.py-output.error{border-color:#f0a37f;color:#ffd6bf}
+.py-small{font-size:13px;color:var(--muted);margin:12px 0 0}
+.py-stop:disabled{opacity:.4}
+body.present .py-editor{min-height:250px}
+@media(max-width:780px){.py-editor{font-size:12px;min-height:285px;padding:12px}.py-lab{padding:18px}.py-lab-actions button{padding:9px 12px}}
+@media print{.py-lab{break-inside:avoid}.py-lab-actions,.py-run-status{display:none!important}.py-editor{height:auto;min-height:140px}}
+</style></head><body><header><div class="brand"><span>◉</span> Algoritmus műhely</div><div><button id="present" aria-pressed="false">Prezentációs nézet</button> <button id="fullscreen">Teljes képernyő</button></div></header><main><div class="chooser" aria-label="Feladatválasztó"><button id="choose-j"><strong>01 · Josephus</strong><small>Ki marad a körben?</small></button><button id="choose-d"><strong>02 · 100 ajtó</strong><small>Melyik marad nyitva?</small></button><button id="choose-c"><strong>03 · Hamis érme</strong><small>Két mérésből megtalálod?</small></button></div><div class="eyebrow">Digitális kultúra · Python · Interaktív fejtörők</div><h1 id="lesson-title"></h1><p class="lead" id="lesson-intro"></p><span class="tag" id="lesson-tag"></span><span class="tag">8 perces bemutatóhoz is</span><nav id="nav" aria-label="A feladat részei"></nav><article id="lesson-j"><section class="section active"><div class="grid"><div class="panel"><div class="eyebrow">01 / A kihívás</div><h2>Tíz hely. Egy bennmaradó.</h2><p class="question">Tíz gyerek körben áll. Minden második kilép. Hová állnál, ha utoljára szeretnél bent maradni?</p><p>Az 1-esnél kezdjük a számolást: ő az első, a 2-es a második, tehát a 2-es lép ki először. Mindig a kieső utáni gyereknél folytatjuk, újra egytől számolva.</p><div class="callout">A kieső helyeket kihagyjuk. A kör végén visszajutunk az elejére.</div></div><div class="panel"><h3>Először gondolkodjunk!</h3><ol class="steps"><li>Melyik számok esnek ki az első körben?</li><li>Az első kör után újrakezdjük az 1-esnél?</li><li>Hogyan lehet a körbejárást listával leírni?</li></ol><label>A tipped (1–10)<input id="j-guess" type="number" min="1" max="10" placeholder="?" aria-label="Tipp a bennmaradó helyére"></label><p class="muted">A megoldást a szimuláció végén ellenőrizheted.</p></div></div></section><section class="section"><div class="grid"><div class="panel"><h2>A szabályból algoritmus</h2><ol class="steps"><li>Készítsük el a résztvevők listáját.</li><li>Induljunk a lista elejéről (0. index).</li><li>Lépjünk <code>k − 1</code> helyet, körbeérve.</li><li>Töröljük a kiválasztott elemet.</li><li>Folytassuk a következő résztvevőnél.</li><li>Ismételjük, amíg egyetlen elem marad.</li></ol></div><div class="panel"><h3>Miért kell a modulo?</h3><p>A <code>%</code> az osztás maradékát adja. Segítségével visszatérünk a lista elejére.</p><p class="question"><code>(index + k − 1) % hossz</code></p><p>Példa: 5 elem maradt, az index 4, és minden második kiesik.</p><div class="callout"><code>(4 + 2 − 1) % 5 = 0</code><br>A lista utolsó elemétől az elsőhöz jutunk.</div><p class="muted">Az index 0-tól indul; a résztvevők számozása 1-től. A két szám nem ugyanaz!</p></div></div></section><section class="section"><div class="controls"><label>Résztvevők (2–30)<input id="j-n" type="number" min="2" max="30" value="10"></label><label>Minden k-adik (2–10)<input id="j-k" type="number" min="2" max="10" value="2"></label><button id="j-reset">Újrakezdés</button></div><div class="grid"><div class="panel"><svg id="j-circle" viewBox="0 0 460 400" role="img" aria-label="A körben álló résztvevők"></svg><div id="j-status" aria-live="polite"></div><div class="buttons"><button id="j-back">Vissza</button><button class="primary" id="j-step">Következő kieső →</button><button id="j-play">Automatikus lejátszás</button></div></div><div class="panel"><h3>Nyomkövetés</h3><p class="muted">A táblázat egy sora egy ciklusforduló. Az index a törlés előtti listára vonatkozik.</p><div id="j-tracewrap"><table><thead><tr><th>Lépés</th><th>Index</th><th>Kieső</th><th>Maradók</th></tr></thead><tbody id="j-trace"></tbody></table></div><div id="j-result" class="callout" hidden></div></div></div></section><section class="section"><div class="grid"><div class="panel"><h2>A megoldás Pythonban</h2><pre id="j-code"></pre><button id="j-copy" style="margin-top:20px">Kód másolása</button><a id="j-download" download="josephus.py" style="margin-left:15px">Letöltés .py</a></div><div class="panel"><h3>Mit jelentenek a sorok?</h3><p><code>list(range(1, n + 1))</code>: létrehozza az 1-től n-ig számozott résztvevőket.</p><p><code>while len(kor) &gt; 1</code>: addig ismétel, amíg egynél többen vannak.</p><p><code>pop(index)</code>: eltávolítja és visszaadja az adott indexű elemet.</p><p>Törléskor a következő elem a kieső helyére csúszik, ezért az indexet nem növeljük külön. A következő modulo a kör végén is helyesen kezeli az indexet.</p><div class="callout">A kör szimulációja JavaScriptben működik. Az alábbi interaktív szerkesztő viszont közvetlenül, valódi Pythonként futtatja a megoldást a böngészőben.</div></div></div><div class="panel py-lab" id="j-py-lab" aria-labelledby="j-py-heading">
+      <div class="eyebrow">Interaktív Python-labor</div>
+      <h3 id="j-py-heading">Futtasd és szerkeszd a Python-kódot!</h3>
+      <p class="py-lab-intro">Josephus: módosítsd a résztvevők számát vagy a lépésközt! Az eredeti megoldás automatikusan bekerül a szerkesztőbe, amelyet szabadon átírhatsz.</p>
+      <p class="py-lab-hint"><strong>Kipróbálandó:</strong> Próbáld ki a program végén a <code>josephus(7, 3)</code> hívást. Ki marad a körben?</p>
+      <label class="py-editor-label" for="j-py-editor">Python-program (szerkeszthető)</label>
+      <textarea id="j-py-editor" class="py-editor" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-describedby="j-py-status" wrap="off"></textarea>
+      <div class="py-lab-actions">
+        <button class="primary py-run" id="j-py-run" type="button">▶ Python futtatása</button>
+        <button class="py-stop" id="j-py-stop" type="button" disabled>■ Leállítás</button>
+        <button id="j-py-reset" type="button">Eredeti kód visszaállítása</button>
+        <button id="j-py-copy" type="button">Szerkesztett kód másolása</button>
+        <button id="j-py-download" type="button">Szerkesztett .py letöltése</button>
+      </div>
+      <p class="py-run-status" id="j-py-status" role="status" aria-live="polite">Készen áll. Kattints a „Python futtatása” gombra, vagy használd a Ctrl + Enter billentyűket.</p>
+      <div class="py-output-header">A program kimenete</div>
+      <pre class="py-output" id="j-py-output" aria-label="A Python-program kimenete" aria-live="polite">A futtatás eredménye itt jelenik meg.</pre>
+      <p class="py-small">Valódi Python fut a saját böngésződben (Pyodide). Az első indításhoz internetkapcsolat és rövid betöltési idő szükséges; nincs szükség Python-telepítésre vagy külön szerverre. A futtató tanulási célú; az <code>input()</code> interaktív bekérése itt nem támogatott.</p>
+    </div></section><section class="section"><div class="grid"><div class="panel"><h2>Próbáljuk másképp!</h2><ol class="steps"><li>5 résztvevő, minden második kiesik. Ki marad?</li><li>7 résztvevő, minden harmadik kiesik. Mi változik?</li><li>Miért hibás az <code>index + k</code>, ha az aktuális résztvevőt is számoljuk?</li></ol><button id="j-reveal">Megoldások megmutatása</button><div class="answer callout" id="j-answers">1. A 3-as marad (kiesők: 2, 4, 1, 5).<br>2. A 4-es marad (kiesők: 3, 6, 2, 7, 5, 1).<br>3. Egy hellyel többet lépnénk a szükségesnél.</div></div><div class="panel"><h3>Óra végi ellenőrzés</h3><p>A tanuló képes legyen:</p><ul><li>szóban megfogalmazni a kiesés szabályát;</li><li>végigkövetni egy rövid lista változásait;</li><li>elmagyarázni a ciklus és a modulo szerepét;</li><li>új bemenettel tesztelni a programot.</li></ul><p class="muted">Előismeret: Python-lista, indexelés, változó, while ciklus. A feladat ezek gyakorlására készült; a nehézség a csoport tudásához igazítható.</p></div></div></section></article><article id="lesson-d" hidden><section class="section"><div class="grid"><div class="panel"><div class="eyebrow">01 / A kihívás</div><h2>Száz ajtó. Száz kör.</h2><p class="question">Melyik ajtók maradnak nyitva a végén?</p><p>Kezdetben minden ajtó zárva van. Az első körben mindegyik állapotát megváltoztatjuk. A másodikban minden másodikét, a harmadikban minden harmadikét, és így tovább, a századik körig.</p><div class="callout">Átváltás: a zárt ajtót kinyitjuk, a nyitottat becsukjuk. A k-adik körben a k többszöröseihez nyúlunk.</div></div><div class="panel"><h3>Először csak 10 ajtóval gondolkodj!</h3><ol class="steps"><li>Mi történik az első körben?</li><li>Miért csukódik be a 6-os a második körben?</li><li>A 6-oshoz melyik további körökben nyúlunk?</li></ol><label>A tipped: hány ajtó marad nyitva 100-ból?<input id="d-guess" type="number" min="0" max="100" placeholder="?"></label><p class="muted">A szimulációban 20 ajtóval indulunk, majd 100-ra válthatsz. Mindig ugyanannyi kört végzünk, ahány ajtó van.</p></div></div></section>
 <section class="section"><div class="grid"><div class="panel"><h2>Az állapotot tároljuk</h2><p>Egy lista minden eleme egy ajtó állapota: <code>False</code> = zárva, <code>True</code> = nyitva.</p><ol class="steps"><li>Készíts n zárt ajtót.</li><li>A külső ciklusban válaszd ki a kört: 1, 2, …, n.</li><li>A belső ciklusban járd be a kör számának többszöröseit.</li><li>Váltsd át az érintett ajtók állapotát.</li><li>A végén gyűjtsd ki a nyitott ajtók számát.</li></ol></div><div class="panel"><h3>Két ciklus, két feladat</h3><p class="question">A kör száma mondja meg a lépésközt.</p><p>A 3. körben a <strong>3, 6, 9, 12…</strong> ajtókat váltjuk át. Python-indexük: <strong>2, 5, 8, 11…</strong>.</p><div class="callout"><code>range(kor - 1, n, kor)</code><br>Kezdés: a kor-adik ajtó indexe.<br>Vég: n előtt megállunk.<br>Lépésköz: kor.</div><p><code>not</code>: logikai tagadás. A <code>not False</code> értéke <code>True</code>, a <code>not True</code> értéke <code>False</code>.</p></div></div></section>
 <section class="section"><div class="controls"><label>Ajtók száma<select id="d-n"><option value="10">10 ajtó</option><option value="20" selected>20 ajtó</option><option value="100">100 ajtó</option></select></label><button id="d-reset">Újrakezdés</button><button id="d-step" class="primary">Következő kör →</button><button id="d-back">Vissza</button><button id="d-play">Automatikus lejátszás</button></div><div class="grid wideleft"><div class="panel"><div class="simstats"><span id="d-round"></span><span id="d-count"></span></div><p class="legend"><span class="dot open"></span> Nyitva <span class="dot closed"></span> Zárva <span class="dot touched"></span> Ebben a körben átváltott</p><div id="d-doors" class="doorgrid"></div><p id="d-status" aria-live="polite"></p><div id="d-end" class="callout" hidden></div><p class="muted">Kattints egy ajtóra: megmutatjuk, eddig mikor változott az állapota.</p><div id="d-inspect" class="callout">Válassz egy ajtót a részletekhez.</div></div><div class="panel"><h3>Nyomkövetés körönként</h3><div class="tracewrap" id="d-tracewrap"><table><thead><tr><th>Kör</th><th>Átváltott ajtók</th><th>Nyitva</th></tr></thead><tbody id="d-trace"></tbody></table></div></div></div></section>
-<section class="section"><div class="grid"><div class="panel"><h2>A megoldás Pythonban</h2><pre id="d-code"></pre><div class="codeactions"><button id="d-copy">Kód másolása</button><a id="d-download" download="szaz_ajto.py">Letöltés .py</a></div></div><div class="panel"><h3>A kód olvasása</h3><p><code>[False] * n</code>: n darab zárt ajtó.</p><p><code>range(1, n + 1)</code>: 1-től n-ig járjuk be a köröket.</p><p>A belső ciklus csak az adott körben érintett ajtókat keresi fel. A <code>not</code> átváltja az állapotukat.</p><p>Az utolsó ciklus a nyitott ajtók <strong>sorszámát</strong> gyűjti ki, ezért adunk az indexhez egyet.</p><div class="callout">Tanári kérdés: mi változna, ha a belső ciklus mindig 1-es lépésközzel haladna?</div><p class="muted">A webes szemléltetés JavaScriptben követi ugyanezt az algoritmust. A Python-kód letölthető és külön futtatható.</p></div></div></section>
+<section class="section"><div class="grid"><div class="panel"><h2>A megoldás Pythonban</h2><pre id="d-code"></pre><div class="codeactions"><button id="d-copy">Kód másolása</button><a id="d-download" download="szaz_ajto.py">Letöltés .py</a></div></div><div class="panel"><h3>A kód olvasása</h3><p><code>[False] * n</code>: n darab zárt ajtó.</p><p><code>range(1, n + 1)</code>: 1-től n-ig járjuk be a köröket.</p><p>A belső ciklus csak az adott körben érintett ajtókat keresi fel. A <code>not</code> átváltja az állapotukat.</p><p>Az utolsó ciklus a nyitott ajtók <strong>sorszámát</strong> gyűjti ki, ezért adunk az indexhez egyet.</p><div class="callout">Tanári kérdés: mi változna, ha a belső ciklus mindig 1-es lépésközzel haladna?</div><p class="muted">A szimuláció JavaScriptben, az alábbi szerkeszthető program valódi Pythonként, a böngészőben fut.</p></div></div><div class="panel py-lab" id="d-py-lab" aria-labelledby="d-py-heading">
+      <div class="eyebrow">Interaktív Python-labor</div>
+      <h3 id="d-py-heading">Futtasd és szerkeszd a Python-kódot!</h3>
+      <p class="py-lab-intro">100 ajtó: figyeld meg, hogyan változik a végeredmény! Az eredeti megoldás automatikusan bekerül a szerkesztőbe, amelyet szabadon átírhatsz.</p>
+      <p class="py-lab-hint"><strong>Kipróbálandó:</strong> Próbáld ki a <code>nyitott_ajtok(20)</code>, majd a <code>nyitott_ajtok(100)</code> hívást.</p>
+      <label class="py-editor-label" for="d-py-editor">Python-program (szerkeszthető)</label>
+      <textarea id="d-py-editor" class="py-editor" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-describedby="d-py-status" wrap="off"></textarea>
+      <div class="py-lab-actions">
+        <button class="primary py-run" id="d-py-run" type="button">▶ Python futtatása</button>
+        <button class="py-stop" id="d-py-stop" type="button" disabled>■ Leállítás</button>
+        <button id="d-py-reset" type="button">Eredeti kód visszaállítása</button>
+        <button id="d-py-copy" type="button">Szerkesztett kód másolása</button>
+        <button id="d-py-download" type="button">Szerkesztett .py letöltése</button>
+      </div>
+      <p class="py-run-status" id="d-py-status" role="status" aria-live="polite">Készen áll. Kattints a „Python futtatása” gombra, vagy használd a Ctrl + Enter billentyűket.</p>
+      <div class="py-output-header">A program kimenete</div>
+      <pre class="py-output" id="d-py-output" aria-label="A Python-program kimenete" aria-live="polite">A futtatás eredménye itt jelenik meg.</pre>
+      <p class="py-small">Valódi Python fut a saját böngésződben (Pyodide). Az első indításhoz internetkapcsolat és rövid betöltési idő szükséges; nincs szükség Python-telepítésre vagy külön szerverre. A futtató tanulási célú; az <code>input()</code> interaktív bekérése itt nem támogatott.</p>
+    </div></section>
 <section class="section"><div class="grid"><div class="panel"><h2>Mi a rejtett szabály?</h2><ol class="steps"><li>Írd le, mely körök váltják át a 12-es ajtót!</li><li>Most vizsgáld meg a 9-est. Mi a különbség?</li><li>Jósold meg a végeredményt 20, majd 100 ajtónál.</li></ol><button data-reveal="d-answer">Megoldás és magyarázat</button><div class="answer callout" id="d-answer"><p>12 osztói: 1, 2, 3, 4, 6, 12. Hat váltás után zárva lesz.</p><p>9 osztói: 1, 3, 9. Három váltás után nyitva lesz.</p><p>Az osztók párba állíthatók. Négyzetszámnál a négyzetgyök önmagával alkot párt, ezért a különböző osztók száma páratlan.</p><p><strong>20 ajtónál:</strong> 1, 4, 9, 16.<br><strong>100 ajtónál:</strong> 1, 4, 9, 16, 25, 36, 49, 64, 81, 100.</p></div></div><div class="panel"><h3>Mit tudsz ebből használni?</h3><p>Állapotokat tárolni és szabály szerint módosítani: játékmezők, kapcsolók, jelzőfények kezelésénél.</p><p>Egymásba ágyazott ciklusokat értelmezni: amikor egy folyamat minden körében több elemet vizsgálunk meg.</p><h3>Óra végi ellenőrzés</h3><p>Miért nem elég mindig <code>True</code>-ra állítani az ajtót? Miért <code>kor - 1</code> a kezdőindex? Miért fontos, hogy kezdetben minden ajtó zárt?</p></div></div></section>
 </article><article id="lesson-c" hidden><section class="section"><div class="grid"><div class="panel"><div class="eyebrow">01 / A kihívás</div><h2>Kilenc érme. Két mérés.</h2><p class="question">Egy érme könnyebb a többinél. Melyik az?</p><p>Nyolc érme egyforma tömegű, egy hamis érme könnyebb. Kétkarú mérleged van: csak azt mutatja meg, melyik oldal nehezebb, vagy hogy egyensúlyban vannak-e.</p><div class="callout">Pontosan egy hamis érme van, és biztosan könnyebb. Legfeljebb két mérlegelést végezhetsz.</div></div><div class="panel"><h3>Milyen méréssel kezdenél?</h3><ol class="steps"><li>Egy-egy érmét mérnél össze?</li><li>Mi derül ki, ha három-három érmét teszel a mérlegre?</li><li>Mit tudsz a kimaradó érmékről, ha a mérleg egyensúlyban van?</li></ol><p class="muted">A jó első mérés minden lehetséges kimenetele után legfeljebb három jelöltet hagy.</p><label>A tipped a következő rejtélyhez (1–9)<input id="c-guess" type="number" min="1" max="9" placeholder="?"></label></div></div></section>
 <section class="section"><div class="grid"><div class="panel"><h2>Osszuk három csoportra!</h2><p><strong>A:</strong> 1, 2, 3 &nbsp; <strong>B:</strong> 4, 5, 6 &nbsp; <strong>C:</strong> 7, 8, 9</p><p>Első mérés: A csoport a bal, B csoport a jobb serpenyőben.</p><ul><li>Bal könnyebb → az A csoport gyanús.</li><li>Jobb könnyebb → a B csoport gyanús.</li><li>Egyensúly → a C csoport gyanús.</li></ul><p>Második mérés: a három gyanúsból az elsőt és a másodikat hasonlítjuk össze.</p><div class="callout">A könnyebb a hamis. Egyensúlynál a harmadik, kimaradó érme a hamis.</div></div><div class="panel"><h3>Három lehetséges kimenetel</h3><p class="question">9 lehetőség → 3 lehetőség → 1 érme</p><p>A programban ez <code>if / elif / else</code> elágazás. A mérés eredménye dönti el, melyik ágon folytatjuk.</p><p>Mindig ugyanannyi érmét mérünk a két oldalon, így a tömegkülönbséget a hamis érme okozza.</p><p class="muted">A könnyebb serpenyő magasabbra kerül. A szimuláció ezt is mutatja, és szövegesen kiírja az eredményt.</p></div></div></section>
 <section class="section"><div class="controls"><button id="c-reset">Új rejtély</button><button id="c-step" class="primary">1. mérlegelés →</button><button id="c-back">Vissza</button></div><div class="grid"><div class="panel"><div class="simstats"><span id="c-round"></span><span id="c-suspects"></span></div><div id="c-coins" class="coins"></div><p class="legend"><span class="dot open"></span> Lehetséges hamis <span class="dot closed"></span> Kizárt érme</p><svg id="c-scale" viewBox="0 0 460 260" role="img" aria-label="Kétkarú mérleg"></svg><p id="c-status" aria-live="polite"></p><div id="c-plan" class="callout"></div><div id="c-result" class="callout" hidden></div></div><div class="panel"><h3>A döntések nyomában</h3><div class="tracewrap"><table><thead><tr><th>Mérés</th><th>Bal / jobb</th><th>Eredmény</th><th>Jelöltek</th></tr></thead><tbody id="c-trace"></tbody></table></div><p class="muted">Az Új rejtély véletlenszerűen választ egy könnyebb érmét. A Vissza ugyanannak a rejtélynek az előző állapotát mutatja.</p><h3>Próbáld végig mind a kilenc esetet!</h3><p>Egy teszt bemutatja, hogy az algoritmus akkor is megtalálja a hamisat, ha az bármelyik helyen van.</p><button id="c-test">9 eset ellenőrzése</button><div id="c-testresult" aria-live="polite"></div></div></div></section>
-<section class="section"><div class="grid"><div class="panel"><h2>A megoldás Pythonban</h2><pre id="c-code"></pre><div class="codeactions"><button id="c-copy">Kód másolása</button><a id="c-download" download="hamis_erme.py">Letöltés .py</a></div></div><div class="panel"><h3>A mérleg modellje</h3><p>A lista az érmék tömegét tárolja, 1-től 9-ig számozott sorrendben. A mintában 10 az igazi, 9 a könnyebb érme tömege.</p><p><code>sum(erme[0:3])</code>: az első három érme együttes tömege. A <code>[3:6]</code> a következő három érmét választja ki.</p><p>Az első mérés kiválasztja a gyanús hármas kezdőindexét: <code>0</code>, <code>3</code> vagy <code>6</code>.</p><p>A második mérés a hármas első két elemét hasonlítja össze. A függvény a hamis érme <strong>1-től számozott sorszámát</strong> adja vissza.</p><div class="callout">A kód két fizikai mérlegelés eredményét modellezi. Az if és elif összehasonlításai ugyanannak a mérésnek a lehetséges kimeneteleit értelmezik.</div><p class="muted">A bemeneti tömegek a szimulációhoz kellenek; a valódi fejtörő megoldója csak a mérleg háromféle eredményét látja.</p></div></div></section>
+<section class="section"><div class="grid"><div class="panel"><h2>A megoldás Pythonban</h2><pre id="c-code"></pre><div class="codeactions"><button id="c-copy">Kód másolása</button><a id="c-download" download="hamis_erme.py">Letöltés .py</a></div></div><div class="panel"><h3>A mérleg modellje</h3><p>A lista az érmék tömegét tárolja, 1-től 9-ig számozott sorrendben. A mintában 10 az igazi, 9 a könnyebb érme tömege.</p><p><code>sum(erme[0:3])</code>: az első három érme együttes tömege. A <code>[3:6]</code> a következő három érmét választja ki.</p><p>Az első mérés kiválasztja a gyanús hármas kezdőindexét: <code>0</code>, <code>3</code> vagy <code>6</code>.</p><p>A második mérés a hármas első két elemét hasonlítja össze. A függvény a hamis érme <strong>1-től számozott sorszámát</strong> adja vissza.</p><div class="callout">A kód két fizikai mérlegelés eredményét modellezi. Az if és elif összehasonlításai ugyanannak a mérésnek a lehetséges kimeneteleit értelmezik.</div><p class="muted">A bemeneti tömegek a szimulációhoz kellenek; a valódi fejtörő megoldója csak a mérleg háromféle eredményét látja.</p></div></div><div class="panel py-lab" id="c-py-lab" aria-labelledby="c-py-heading">
+      <div class="eyebrow">Interaktív Python-labor</div>
+      <h3 id="c-py-heading">Futtasd és szerkeszd a Python-kódot!</h3>
+      <p class="py-lab-intro">Hamis érme: ellenőrizd különböző elhelyezésekkel! Az eredeti megoldás automatikusan bekerül a szerkesztőbe, amelyet szabadon átírhatsz.</p>
+      <p class="py-lab-hint"><strong>Kipróbálandó:</strong> Az <code>erme</code> listában helyezd át a <code>9</code>-et egy másik pozícióra, a többi tömeg maradjon <code>10</code>.</p>
+      <label class="py-editor-label" for="c-py-editor">Python-program (szerkeszthető)</label>
+      <textarea id="c-py-editor" class="py-editor" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-describedby="c-py-status" wrap="off"></textarea>
+      <div class="py-lab-actions">
+        <button class="primary py-run" id="c-py-run" type="button">▶ Python futtatása</button>
+        <button class="py-stop" id="c-py-stop" type="button" disabled>■ Leállítás</button>
+        <button id="c-py-reset" type="button">Eredeti kód visszaállítása</button>
+        <button id="c-py-copy" type="button">Szerkesztett kód másolása</button>
+        <button id="c-py-download" type="button">Szerkesztett .py letöltése</button>
+      </div>
+      <p class="py-run-status" id="c-py-status" role="status" aria-live="polite">Készen áll. Kattints a „Python futtatása” gombra, vagy használd a Ctrl + Enter billentyűket.</p>
+      <div class="py-output-header">A program kimenete</div>
+      <pre class="py-output" id="c-py-output" aria-label="A Python-program kimenete" aria-live="polite">A futtatás eredménye itt jelenik meg.</pre>
+      <p class="py-small">Valódi Python fut a saját böngésződben (Pyodide). Az első indításhoz internetkapcsolat és rövid betöltési idő szükséges; nincs szükség Python-telepítésre vagy külön szerverre. A futtató tanulási célú; az <code>input()</code> interaktív bekérése itt nem támogatott.</p>
+    </div></section>
 <section class="section"><div class="grid"><div class="panel"><h2>Gondolkodj a mérés előtt!</h2><ol class="steps"><li>Az első mérés egyensúlyt mutat. Melyik érme lehet hamis?</li><li>A második mérésben a 7-es és a 8-as is egyensúlyban van. Mit tudunk?</li><li>Miért nem jó első lépés az 1-es és a 2-es összehasonlítása?</li></ol><button data-reveal="c-answer">Megoldások megmutatása</button><div id="c-answer" class="answer callout"><p>1. A 7-es, 8-as vagy 9-es.</p><p>2. A 9-es a hamis: biztosan van egy könnyebb érme.</p><p>3. Egyensúly esetén hét jelölt maradna. Egy további, három kimenetelű mérés nem tud hét különböző jelöltet biztosan megkülönböztetni.</p></div></div><div class="panel"><h3>Mire jó a döntési fa?</h3><p>Hibakereséskor is olyan vizsgálatot keresünk, amelynek az eredménye alapján eldönthetjük, merre menjünk tovább.</p><p>A programban minden lehetőséget kezelünk: kisebb, nagyobb, egyenlő. A megoldás feltételeit is pontosan megadjuk.</p><h3>Haladó kérdés</h3><p>27 érméből egy könnyebb. Elég lehet három mérlegelés?</p><button data-reveal="c-extra">Indoklás megmutatása</button><div id="c-extra" class="answer callout">Igen: 9–9–9 csoportra bontás, majd 3–3–3, végül 1–1–1. Minden mérés a három csoport egyikére szűkíti a keresést.</div></div></div></section>
 </article><div class="footer"><span id="page"></span><span>← → lapozás · Szóköz: következő szimulációs lépés</span><div><button id="prev">← Előző</button> <button id="next">Következő →</button></div></div><details class="curriculum"><summary>Tanároknak · Tantárgyi cél és NAT-kapcsolódás</summary><p><strong id="curriculum-title"></strong></p><p id="curriculum-purpose"></p><p><strong>Tantervi kapcsolódás:</strong> NAT, 110/2012. (VI. 4.) Korm. rendelet melléklete, II.3.8.1. Digitális kultúra; 9–12. évfolyam; Algoritmizálás, formális programozási nyelv használata. A kapcsolódó tanulási eredmények: a megoldás lépéseinek értelmezése, adattípusok használata, algoritmus kódolása és a helyesség tesztelése.</p><p><strong>Kerettanterv:</strong> az OH Digitális kultúra 9–11. évfolyamos gimnáziumi kerettantervének algoritmizálási témaköre. Az évfolyam-besorolások tanári ajánlások, az előismeretekhez és a helyi tantervhez igazítandók. A fejtörők választott alkalmazó feladatok.</p><p><a href="https://net.jogtar.hu/jogszabaly?docid=a1200110.kor" target="_blank" rel="noopener">NAT szövege</a> · <a href="https://www.oktatas.hu/kozneveles/kerettantervek/2020_nat/kerettanterv_gimn_9_12_evf/" target="_blank" rel="noopener">OH kerettantervek</a> · Forrásellenőrzés: 2026. október 10.</p></details></main><script>const CODES={"j": "def josephus(n, k):\n    kor = list(range(1, n + 1))\n    index = 0\n\n    while len(kor) > 1:\n        index = (index + k - 1) % len(kor)\n        kieso = kor.pop(index)\n        print(\"Kieső:\", kieso, \"Maradók:\", kor)\n\n    return kor[0]\n\nprint(\"Bennmaradó:\", josephus(10, 2))", "d": "def nyitott_ajtok(n):\n    ajtok = [False] * n\n\n    for kor in range(1, n + 1):\n        for i in range(kor - 1, n, kor):\n            ajtok[i] = not ajtok[i]\n\n    nyitva = []\n    for i in range(n):\n        if ajtok[i]:\n            nyitva.append(i + 1)\n    return nyitva\n\nprint(nyitott_ajtok(100))", "c": "def hamis_erme(erme):\n    bal = sum(erme[0:3])\n    jobb = sum(erme[3:6])\n    if bal < jobb:\n        kezdet = 0\n    elif bal > jobb:\n        kezdet = 3\n    else:\n        kezdet = 6\n\n    if erme[kezdet] < erme[kezdet + 1]:\n        return kezdet + 1\n    elif erme[kezdet] > erme[kezdet + 1]:\n        return kezdet + 2\n    else:\n        return kezdet + 3\n\nerme = [10, 10, 10, 10, 9, 10, 10, 10, 10]\nprint(\"A hamis érme:\", hamis_erme(erme))"};
 const PURPOSE={"j": "Gyakorló feladat a listák és ciklusok után: szabálykövetés, indexelés, körbejárás modulo segítségével és nyomkövetés. Előismeret: változók, listák, ciklus, függvényhívás. A kód a szekvenciát és a ciklust gyakoroltatja.", "d": "Az állapotok logikai értékként tárolását, a not műveletet és az egymásba ágyazott for ciklusokat gyakoroljuk. Előismeret: listaindexelés, for, range, osztó és többszörös. A négyzetszámokkal való kapcsolat a megfigyelés matematikai indoklása.", "c": "A feltételek alapján hozott döntést és az if / elif / else elágazást gyakoroljuk. Előismeret: összehasonlítás, listaindexelés, lista részletének kiválasztása, sum, függvényhívás. A mérleg modellje segít a döntési fa és a tesztelés megértésében."};
@@ -45,4 +124,203 @@ function cRender(){let s=cHistory[cPos],draw=s,sign=s.sign||0,yL=90+sign*23,yR=9
 $('c-reset').onclick=cReset;$('c-step').onclick=()=>{if(cPos<2){cPos++;cRender()}};$('c-back').onclick=()=>{if(cPos>0){cPos--;cRender()}};$('c-test').onclick=()=>{$('c-testresult').innerHTML='<p>'+Array.from({length:9},(_,i)=>{let result=coinHistory(i+1)[2].suspects[0];return `${i+1}. hamis → ${result}. megtalálva ${result===i+1?'✓':'✗'}`}).join('<br>')+'</p><strong>Mind a 9 esetben 2 mérlegelés elegendő.</strong>'};
 document.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA','BUTTON','A','SUMMARY'].includes(document.activeElement.tagName)||e.ctrlKey||e.metaKey||e.altKey)return;if(e.key==='ArrowRight'){e.preventDefault();show(topic,page+1)}if(e.key==='ArrowLeft'){e.preventDefault();show(topic,page-1)}if(e.code==='Space'&&page===2){e.preventDefault();stop();if(topic==='j')jStep();if(topic==='d')dStep();if(topic==='c'&&cPos<2){cPos++;cRender()}}});window.addEventListener('hashchange',()=>{const [t,p]=location.hash.slice(1).split('/');show(t,Number(p)||0,false)});
 jReset();dReset();cReset();{const [t,p]=location.hash.slice(1).split('/');show(t,Number(p)||0,false)}
+</script><script id="py-runner-script">
+/* GitHub Pages kompatibilis Python-kód futtatás Web Workerben, Pyodide segítségével.
+   A Web Worker lehetővé teszi a végtelen ciklus megszakítását a weboldal lefagyasztása nélkül. */
+(() => {
+  'use strict';
+  const PYODIDE_BASE = 'https://cdn.jsdelivr.net/pyodide/v0.27.7/full/';
+  const LOAD_LIMIT_MS = 90000;
+  const RUN_LIMIT_MS = 12000;
+  const OUTPUT_LIMIT = 30000;
+  const PY_SAMPLES = {
+    j: 'josephus.py',
+    d: 'szaz_ajto.py',
+    c: 'hamis_erme.py'
+  };
+
+  // A tényleges Python-program külön szálon fut, nem blokkolhatja a prezentációt.
+  const workerSource = `
+    'use strict';
+    let pyodideInstance = null;
+    self.onmessage = async (event) => {
+      const { id, source } = event.data;
+      try {
+        if (!pyodideInstance) {
+          self.postMessage({id, type: 'loading'});
+          importScripts('${PYODIDE_BASE}pyodide.js');
+          pyodideInstance = await loadPyodide({indexURL: '${PYODIDE_BASE}'});
+        }
+        self.postMessage({id, type: 'ready'});
+        pyodideInstance.setStdout({batched: line => self.postMessage({id, type:'stdout', text: String(line) + '\\n'})});
+        pyodideInstance.setStderr({batched: line => self.postMessage({id, type:'stderr', text: String(line) + '\\n'})});
+        pyodideInstance.setStdin({error: true}); // Az input() itt tudatosan nem támogatott.
+        // Minden futtatás saját névteret kap, hogy az előző megoldás ne zavarjon be.
+        const globals = pyodideInstance.toPy({__name__: '__main__'});
+        try {
+          await pyodideInstance.runPythonAsync(source, {globals});
+          self.postMessage({id, type:'done'});
+        } finally {
+          globals.destroy();
+        }
+      } catch (e) {
+        self.postMessage({id, type:'error', text: String(e)});
+      }
+    };
+  `;
+  let workerUrl = null;
+  let pyWorker = null;
+  let active = null;
+  let nextId = 0;
+
+  const el = (id) => document.getElementById(id);
+  function setStatus(key, message, kind='') {
+    const node = el(key + '-py-status');
+    node.textContent = message;
+    node.className = 'py-run-status' + (kind ? ' ' + kind : '');
+  }
+  function lockButtons(running) {
+    for (const key of Object.keys(PY_SAMPLES)) {
+      el(key + '-py-run').disabled = running;
+      el(key + '-py-stop').disabled = !running || (active && active.key !== key);
+    }
+  }
+  function clearTimer() {
+    if (active?.timer) { clearTimeout(active.timer); active.timer = null; }
+  }
+  function restartWorker() {
+    if (pyWorker) { pyWorker.terminate(); pyWorker = null; }
+  }
+  function finish(key, message, kind='ok') {
+    clearTimer();
+    active = null;
+    lockButtons(false);
+    setStatus(key, message, kind);
+  }
+  function stopRun(reason='A Python futtatását leállítottuk.') {
+    if (!active) return;
+    const key = active.key;
+    restartWorker();
+    finish(key, reason, 'fail');
+  }
+  function appendOutput(key, content, isError=false) {
+    const output = el(key + '-py-output');
+    const text = output.textContent;
+    if (text.length >= OUTPUT_LIMIT) return;
+    const keep = OUTPUT_LIMIT - text.length;
+    output.textContent += content.slice(0, keep);
+    if (content.length > keep) output.textContent += '\n[…a kimenet további része nem jelenik meg…]';
+    if (isError) output.classList.add('error');
+    output.scrollTop = output.scrollHeight;
+  }
+  function ensureWorker() {
+    if (pyWorker) return pyWorker;
+    if (!window.Worker || !window.WebAssembly || !window.Blob || !window.URL) {
+      throw new Error('Ebben a böngészőben nem érhető el a Python futtatásához szükséges Web Worker vagy WebAssembly.');
+    }
+    if (!workerUrl) {
+      workerUrl = URL.createObjectURL(new Blob([workerSource], {type: 'text/javascript'}));
+    }
+    pyWorker = new Worker(workerUrl);
+    pyWorker.onmessage = (event) => {
+      const msg = event.data;
+      if (!active || active.id !== msg.id) return;
+      const key = active.key;
+      if (msg.type === 'loading') {
+        setStatus(key, 'Python környezet betöltése… (első alkalommal több másodperc lehet)');
+      } else if (msg.type === 'ready') {
+        clearTimer();
+        active.timer = setTimeout(() => stopRun('A program túllépte a 12 másodperces futási időkorlátot. Ellenőrizd a ciklusokat!'), RUN_LIMIT_MS);
+        setStatus(key, 'A Python-program fut…');
+      } else if (msg.type === 'stdout' || msg.type === 'stderr') {
+        appendOutput(key, msg.text, msg.type === 'stderr');
+      } else if (msg.type === 'done') {
+        const out = el(key + '-py-output');
+        if (!out.textContent) out.textContent = 'A program lefutott, de nem írt ki semmit. Használj print(...) utasítást!';
+        finish(key, 'A Python-program sikeresen lefutott.', 'ok');
+      } else if (msg.type === 'error') {
+        appendOutput(key, '\n' + msg.text, true);
+        finish(key, 'Hiba történt a Python-kód futtatásakor. A részletek a kimenetben láthatók.', 'fail');
+      }
+    };
+    pyWorker.onerror = (event) => {
+      if (active) {
+        const key=active.key;
+        appendOutput(key, '\nNem sikerült betölteni vagy futtatni a Python környezetet. Ellenőrizd az internetkapcsolatot, vagy próbáld újra.\n' + (event.message || ''), true);
+        restartWorker();
+        finish(key, 'A Python-környezet nem érhető el.', 'fail');
+      }
+    };
+    return pyWorker;
+  }
+  function run(key) {
+    if (active) return;
+    const source = el(key + '-py-editor').value;
+    const output = el(key + '-py-output');
+    output.textContent = '';
+    output.classList.remove('error');
+    if (!source.trim()) { setStatus(key, 'A szerkesztő üres. Írj be Python-kódot!', 'fail'); return; }
+    if (source.length > 20000) { setStatus(key, 'A kód túl hosszú a tanulói futtatóhoz (maximum 20 000 karakter).', 'fail'); return; }
+    active = {id: ++nextId, key, timer: null};
+    lockButtons(true);
+    setStatus(key, 'A Python futtatójának előkészítése…');
+    active.timer = setTimeout(() => {
+      appendOutput(key, 'Nem sikerült időben betölteni a Python-környezetet. Ellenőrizd az internetkapcsolatot.', true);
+      stopRun('Betöltési időtúllépés.');
+    }, LOAD_LIMIT_MS);
+    try {
+      ensureWorker().postMessage({id: active.id, source});
+    } catch (error) {
+      appendOutput(key, String(error), true);
+      restartWorker();
+      finish(key, 'A böngésző nem tudta elindítani a Python-futtatót.', 'fail');
+    }
+  }
+  function downloadText(name, text) {
+    const objectUrl = URL.createObjectURL(new Blob([text], {type: 'text/x-python;charset=utf-8'}));
+    const a = document.createElement('a');
+    a.href = objectUrl;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
+  }
+  for (const key of Object.keys(PY_SAMPLES)) {
+    const editor = el(key + '-py-editor');
+    editor.value = CODES[key];
+    el(key + '-py-run').addEventListener('click', () => run(key));
+    el(key + '-py-stop').addEventListener('click', () => stopRun());
+    el(key + '-py-reset').addEventListener('click', () => {
+      if (active?.key === key) stopRun();
+      editor.value = CODES[key];
+      el(key + '-py-output').textContent = 'A futtatás eredménye itt jelenik meg.';
+      el(key + '-py-output').classList.remove('error');
+      setStatus(key, 'Az eredeti Python-kód visszaállítva.', 'ok');
+    });
+    el(key + '-py-copy').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(editor.value);
+        setStatus(key, 'A szerkesztett Python-kód vágólapra másolva.', 'ok');
+      } catch {
+        editor.focus(); editor.select();
+        setStatus(key, 'A böngésző letiltotta a másolást. A kód kijelölve; nyomd meg a Ctrl + C billentyűket.', 'fail');
+      }
+    });
+    el(key + '-py-download').addEventListener('click', () => downloadText(PY_SAMPLES[key], editor.value));
+    editor.addEventListener('keydown', (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+        event.preventDefault(); run(key);
+      } else if (event.key === 'Tab' && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+        event.preventDefault();
+        const start=editor.selectionStart, end=editor.selectionEnd;
+        editor.setRangeText('    ', start, end, 'end');
+      }
+    });
+  }
+  window.addEventListener('beforeunload', () => {
+    restartWorker();
+    if (workerUrl) URL.revokeObjectURL(workerUrl);
+  });
+})();
 </script></body></html>
